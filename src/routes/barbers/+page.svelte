@@ -1,6 +1,7 @@
 <script>
     import "../../app.css"
     import NavBar from "$lib/components/navBar.svelte";
+    import Calendar from "$lib/components/calendar.svelte";
     import { onMount } from "svelte";
     import { barbershopid } from "$lib/stores/barbershopid";
     import { get } from "svelte/store";
@@ -41,4 +42,5 @@
              
         {/each}
     </div>
+    <Calendar />
 </main>
