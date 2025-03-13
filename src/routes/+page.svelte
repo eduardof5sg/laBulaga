@@ -9,7 +9,7 @@
 async function  getInfo(){
     try {
         const id = get(barbershopid);
-        const response = await fetch(`http://localhost:3000/barbershops/${id}`)
+        const response = await fetch(`https://barbermap-server.onrender.com/barbershops/${id}`)
         data = await response.json()
         
         return data

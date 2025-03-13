@@ -10,7 +10,7 @@
     async function getBarbers() {
         try {
             const id = get(barbershopid);
-            const response = await fetch(`http://localhost:3000/barbers/${id}`);
+            const response = await fetch(`https://barbermap-server.onrender.com/barbers/${id}`);
             if (!response.ok) throw new Error("Error al obtener barberos");
             const data = await response.json();
             console.log(data)
