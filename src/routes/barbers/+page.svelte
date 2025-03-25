@@ -7,6 +7,8 @@
     import { get } from "svelte/store";
 
     let barbers = [];
+    let showCalendar = false;
+    let selectedBarberId = null;
 
     async function getBarbers() {
         try {
@@ -19,6 +21,16 @@
         } catch (error) {
             console.error("Error cargando barberos:", error);
         }
+    }
+
+    function openCalendar(barberId){
+        selectedBarberId = barberId;
+        console.log("hola")
+        showCalendar = true;
+    }
+    function closeCalendar(){
+        showCalendar = false;
+        selectedBarberId = null;
     }
 
     onMount(getBarbers);
@@ -34,7 +46,9 @@
                 <h2 class="text-xl font-bold">{barber.name}</h2>
                 <p class="text-gray-600">{barber.experience} años de experiencia</p>
                 <div class="flex flex-col gap-2 mt-2">
-                    <button class="p-2 bg-black text-white rounded-xl">Pedir Cita</button>
+                    <button class="p-2 bg-black text-white rounded-xl" on:click={() => openCalendar(barber._id)}>
+                        Pedir Cita
+                    </button>
                     <button class="p-2 bg-gray-300 text-black rounded-xl">Ver cortes</button>
                 </div>
             </div>
@@ -42,5 +56,12 @@
              
         {/each}
     </div>
-    <Calendar />
+    {#if showCalendar}
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+            <button class="absolute top-2 right-2 text-xl" on:click={closeCalendar}>✖</button>
+            <Calendar barberId={selectedBarberId} />
+        </div>
+    </div>
+{/if}
 </main>

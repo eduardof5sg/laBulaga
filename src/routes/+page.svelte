@@ -22,7 +22,7 @@
 </script>
 
 <main>
-  <div class="fixed top-0 left-0 w-full bg-black text-white p-4 z-10">
+  <div class="fixed top-0 left-0 w-full bg-black text-white  z-10">
     <NavBar />
   </div>
   <div class="relative">
@@ -42,7 +42,7 @@
         estilo se vive, la confianza se siente y la esencia dominicana se
         refleja en cada corte.
       </p>
-      <button class="text-white font-bold bg-black p-3 rounded-xl mt-12 text-xl ml-22">Reserva tu cita</button>
+      <button  class="text-white font-bold bg-black p-3 rounded-xl mt-12 text-xl ml-22">Reserva tu cita</button>
     </div>
   </div>
 </main>
