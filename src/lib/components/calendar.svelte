@@ -28,9 +28,9 @@
   
     // Cambiar mes
     function changeMonth(direction) {
-      currentDate.setMonth(currentDate.getMonth() + direction);
-      generateDates();
-    }
+    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + direction, 1);
+    generateDates();
+}
   
     // Seleccionar una fecha
     function selectDate(date) {
@@ -45,10 +45,15 @@
         bookedHours = []; // Limpiar las horas reservadas
 
         // Formatear la fecha a 'YYYY-MM-DD' para usarla en el filtro
-        const formattedDate = date.toISOString().split("T")[0];
+        // Formatear la fecha a 'YYYY/MM/DD' para que coincida con la base de datos
+        const formattedDate = date.getFullYear() + "/" + 
+                            String(date.getMonth() + 1).padStart(2, "0") + "/" + 
+                            String(date.getDate()).padStart(2, "0");
+
 
         // Llamada a la API sin el filtro de fecha
         const response = await fetch(`https://barbermap-server.onrender.com/appoitmens/${barberId}`);
+        // const response = await fetch(`http://localhost:3000/appoitmens/${barberId}`);
         
         if (!response.ok) throw new Error("Error obteniendo citas");
 
@@ -73,7 +78,7 @@
   </script>
   
 
-  <main>
+  <main class="inset-0 ">
     <div class="flex justify-between items-center p-4 gap-6">
         <button class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600" on:click={() => changeMonth(-1)}>Anterior</button>
         <span class="text-xl font-semibold">{currentDate.toLocaleDateString("es-ES", { year: "numeric", month: "short" })}</span>
@@ -86,22 +91,23 @@
                 class="card flex flex-row bg-gray-300 text-black border-2 border-gray-300 rounded-lg cursor-pointer transition-all duration-300 {selectedDate?.getDate() === date.getDate() && selectedDate.getMonth() === date.getMonth() ? 'bg-green-500 text-black' : ''}"
                 on:click={() => selectDate(date)}
             >
-                <div class="w-[90px] text-center">
+                <div class="w-[60px] text-center">
                     <strong class="text-xl">{dayName.substring(0, 3)}</strong><br />
                     <span class="text-lg font-bold">{dayNumber}</span>
                 </div>
             </div>
         {/each}
+        
     </div>
 
     {#if selectedDate}
-        <div class="mt-6 p-4">
+        <div class="mt-1 p-2">
             <h3 class="text-xl font-semibold">Horas disponibles para {selectedDate.toLocaleDateString("es-ES")}</h3>
             <div class="grid grid-cols-4 gap-4 mt-4">
                 {#each Array.from({ length: 13 }, (_, i) => i + 9) as hour}
                     {#each [0, 30] as minutes}
                         {#if !bookedHours.includes(`${String(hour).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`)}
-                            <button class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+                            <button class="bg-green-500 text-white p-2 rounded-lg hover:bg-blue-600"
                                     on:click={() => selectHour(hour, minutes)}>
                                 {String(hour).padStart(2, '0')}:{String(minutes).padStart(2, '0')}
                             </button>
